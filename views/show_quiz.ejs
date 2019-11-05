@@ -1,0 +1,33 @@
+<%- include('includes/tch_head.ejs') %>
+
+</head>
+<body>
+    <%- include('includes/stu_nav.ejs') %>
+    
+    <%if(data.length > 0){%>
+        <table>
+            <%var sn=1; var q_text = '';for(let dt of data){%>
+                <%if( dt.q_text != q_text){q_text = dt.q_text; %>
+                    <tr style="background:#00695c; color:white; text-align: left;" >
+                        <td style="width: 2%;">Q<%=sn++%>:</td>
+                        <td ><%= dt.q_text%> ?</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td style="text-align: left;"><%= dt.a_text%></td>
+                    </tr>
+                <%}else{%>
+                    <tr>
+                        <td></td>
+                        <td style="text-align: left;"><%= dt.a_text%></td>
+                    </tr>
+                <%}%>
+            <%}%>
+        </table>
+    <%}else{%>
+        <h3>Send mail to doctor.</h3>
+    <%}%>
+
+
+    
+<%- include('includes/tch_end.ejs') %>

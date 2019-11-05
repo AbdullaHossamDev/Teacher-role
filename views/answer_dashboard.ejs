@@ -1,0 +1,190 @@
+<%- include('includes/tch_head.ejs') %>
+<script src="http://code.jquery.com/jquery-1.6.2.min.js"></script>	
+</head>
+<body>
+    <%- include('includes/tch_nav.ejs') %>
+
+    <h1><%= c_name%></h1>
+
+    <%if(answers.length > 0){%>
+    <form action="#" method="POST" onsubmit="return checkAnswer()">
+        <input type="hidden" name="qs_id" id="qs_id" value="<%= question.id%>">
+        <h3>Q: <input style="width: 50%;height: 2rem;" type="text" name="question_text" id="question_text" value="<%= question.text%>"></h3>
+
+        <h3>Answers</h3>
+        <table width="25%">
+            <tr align="center" style="background:#00695c; color:white">
+                
+                <td>Sn</td>
+                <td>Answer</td>
+                <td>Right</td>
+                <td>Wrong</td>
+                <td>Type</td>
+                <td>Delete</td>
+            </tr>
+            <%var sn=1;for (let a of answers){%>
+                <tr align="center" id="<%=a.id%>">
+                    <input type="hidden" name="ans_id" id="ans_id" value="<%= a.id%>">
+                    <td><%= sn%></td>
+                    <td><input class="widthHeight" type="text" name="ans_text" id="ans_text" value="<%= a.text%>"></td>
+                    <%if(a.type === 'R'){%>
+                        <td><span>&#10003;</span></td>
+                        <td></td>
+                        <td>
+                            <select class="widthHeight" name="type" id="type" onchange="checkAnswer()">
+                                <option name="rselect" value="r" selected >Right</option>
+                                <option name="wselect" value="w">Wrong</option>
+                            </select>
+                        </td>
+                        <td><button class="widthHeight" type="button" id="r,<%=a.id%>" onclick="return deleteValidation(this.id)">Delete</button></td>
+                    <%}else{%>
+                        <td></td>
+                        <td><span>&#10003;</span></td>
+                        <td>
+                            <select class="widthHeight" name="type" id="type" onchange="checkAnswer()"> 
+                                <option name="rselect" value="r" >Right</option>
+                                <option name="wselect" value="w" selected>Wrong</option>
+                            </select>
+                        </td>
+                        <td><button class="widthHeight" type="button" id="w,<%=a.id%>" onclick="return deleteValidation(this.id)">Delete</button></td>
+                    <%}%>
+                    
+                    
+                </tr>
+            <%sn++;}%>
+        </table>
+        <table>
+            <tr><td><button type="submit" formaction="/tch/update-answer">Save changes</button></td></tr>
+        </table>
+    </form>
+    <%}else{%>
+        <h3>You have no answers for this question.</h3>
+    <%}%>
+
+    <h3>Add answer</h3>
+    <form action="#" method="POST">
+        <table  class="inputT">
+            <input type="hidden" id="fqs_id" value="<%= question.id%>">
+            <tr>
+                <td class="label">Answer</td>
+                <td class="input"><input type="text" id="ftext"></td>
+            </tr>
+            <tr>
+                <td class="label">Type</td>
+                <td class="input">
+                    <select id="ftype" onchange="checkAnswer()"> 
+                        <option value="RR" >Right</option>
+                        <option value="WW">Wrong</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="btn"><button type="button" onclick="addAnswer()">Add answer</button></td>
+            </tr>
+        </table>
+    </form>
+
+    <script>
+        
+        function checkAnswer(){
+
+            var select = document.getElementsByName('type');
+            var rsum =0;
+            var wsum =0;
+            var rindex=-1;
+            var windex=-1;
+            for(var i=0;i<select.length;i++){
+                if(select[i].value === 'r'){
+                    rsum++;
+                    rindex=i;
+                }
+                else{
+                    wsum++;
+                    windex=i;
+                }
+            }
+            if(wsum == 1){
+                document.getElementsByName('rselect')[windex].disabled=true;
+            }
+            else{
+                var rselect = document.getElementsByName('rselect');
+                for(var i=0;i<rselect.length;i++){
+                    rselect[i].disabled=false;
+                }
+            }
+            if(rsum == 1){
+                document.getElementsByName('wselect')[rindex].disabled=true;
+            }
+            else{
+                var wselect = document.getElementsByName('wselect');
+                for(var i=0;i<wselect.length;i++){
+                    wselect[i].disabled=false;
+                }
+            }
+
+        }
+
+        window.onload = checkAnswer();
+
+        function deleteValidation(id){
+            var arr= id.split(',');
+            var ans_type= id[0];
+            var select = document.getElementsByName('type');
+            var sum = 0;
+            for(var i=0;i<select.length;i++){
+                if(select[i].value === ans_type){
+                    sum++;
+                }
+            }
+            if(sum>1){
+                var xhttp;
+                xhttp = new XMLHttpRequest();
+                xhttp.open("POST", "http://localhost:3000/tch/delete-answer/" + arr[1], true);
+                xhttp.send();
+                xhttp.onreadystatechange = function (){
+                    if (this.readyState == 4 && this.status == 200)
+                        if(this.response == "true"){
+                            document.getElementById(arr[1]).remove();
+                            alert('Deleted Successfully');
+                            return checkAnswer();
+                        }
+                        else{
+                            alert('not Successfully');
+                        }
+                        
+                };
+
+            }else{
+                var type= (ans_type==='r') ? 'right':'wrong';
+                alert("This is the last "+type+" answer, you can't delete it!");
+            }
+        }
+            
+        function addAnswer(){
+            var qs_id = document.getElementById('fqs_id').value;
+            var text = document.getElementById('ftext').value;
+            var type = document.getElementById('ftype').value;
+
+
+            var data = {};
+            data.qs_id = qs_id;
+            data.text = text;
+            data.type = type;
+            $.ajax({
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                url: 'http://localhost:3000/tch/add-answer',
+                success: function(msg) {
+                     if(msg != "false"){
+                        document.location.reload(true);
+                     }
+                     return true;},
+				error  : function() { console.log('error');return false;}
+            });
+            
+        }
+
+    </script>
+    
+<%- include('includes/tch_end.ejs') %>

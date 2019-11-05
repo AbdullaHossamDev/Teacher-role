@@ -1,0 +1,122 @@
+<%- include('includes/tch_head.ejs') %>
+
+</head>
+<body>
+    <%- include('includes/tch_nav.ejs') %>
+
+    <h3><%=c_name%></h3>
+    <form action="#" method="POST">
+        <input type="hidden" name="quiz_id" id="quiz_id" value="<%= quiz_id%>">
+        <table style="width:20%;margin:auto;text-align: center;">
+            <tr>
+                <td class="label"><h3>Publish :</h6></td>
+                <td class="input">
+                    <h3>
+                        <select class="widthHeight" name="publish" id="publish">
+                            <option value="Y" <%= publish == 'y' ? 'selected' :''%> >Publish</option>
+                            <option value="N" <%= publish == 'N' ? 'selected' :''%> >Private</option>
+                        </select>
+                    </h3>
+                </td>
+            </tr> 
+        </table>
+        
+        <%if(data.length > 0){%>
+        <table style="width:50%;margin:auto;text-align: left;">
+            <%var sn=1;for(let row of data ){%>
+                <%if(row.exist){%>
+                    <tr style="background:#00695c; color:white">
+                        <td style="width: 1%;"><input type="checkbox" name="selected_questions" checked value="<%= row.id%>" onchange="getid(this.value, this.checked)"></td>
+                        <td style="width: 2%;">Q<%=sn++%>:</td>
+                        <td style="width: 50%;"><%= row.text%> ?</td>
+                        <td style="width: 5%;"></td>
+                    </tr>
+                    <tr>
+                        
+                        <td></td>
+                        <td></td>
+                        <td style="text-align: center;">Answer</td>
+                        <td style="text-align: center;">Type</td>
+                    </tr>
+                    <%for(let ans of row.answer_text){%>
+                        <%if(ans.exist){%>
+                            <tr>
+                                
+                                <td></td>
+                                <td><input type="checkbox" name="selected_answers" checked value="<%= row.id%>,<%=ans.id%>"></td>
+                                <td><%= ans.text%></td>
+                                <td><%= ans.type == 'R'? 'Right':'Wrong'%></td>
+                            </tr>
+                        <%}%>
+                    <%}%>
+                    <%for(let ans of row.answer_text){%>
+                        <%if(!ans.exist){%>
+                            <tr>
+                                
+                                <td></td>
+                                <td><input type="checkbox" name="selected_answers" value="<%= row.id%>,<%=ans.id%>"></td>
+                                <td><%= ans.text%></td>
+                                <td><%= ans.type == 'R'? 'Right':'Wrong'%></td>
+                            </tr>
+                        <%}%>
+                    <%}%>
+                <%}%>
+            <%}%>
+
+
+            <%for(let row of data ){%>
+                <%if(!row.exist){%>
+                    <tr style="background:#00695c; color:white">
+                        
+                        <td style="width: 1%;"><input type="checkbox" name="selected_questions" value="<%= row.id%>" onchange="getid(this.value, this.checked)"></td>
+                        <td style="width: 2%;">Q<%=sn++%>:</td>
+                        <td style="width: 50%;"><%= row.text%> ?</td>
+                        <td style="width: 5%;"></td>
+                    </tr>
+                    <tr>
+                        
+                        <td></td>
+                        <td></td>
+                        <td style="text-align: center;">Answer</td>
+                        <td style="text-align: center;">Type</td>
+                    </tr>
+                    <%for(let ans of row.answer_text){%>
+                        <tr>
+                            <td></td>
+                            <td><input type="checkbox" name="selected_answers" disabled value="<%= row.id%>,<%=ans.id%>"></td>
+                            <td><%= ans.text%></td>
+                            <td><%= ans.type == 'R'? 'Right':'Wrong'%></td>
+                        </tr>
+                    <%}%>
+                <%}%>
+            <%}%>
+            <tr>
+                <td colspan="4" class="btn"><button type="submit" formaction="/tch/save-quiz">Save changes</button></td>
+            </tr>
+        </table>
+	<%}else{%>
+	<h3>You should add new question</h3>
+        <%}%>
+    </form>
+    
+    <script>
+        function getid(msg,checked){
+            var slctd_answers =  document.getElementsByName("selected_answers");
+            var length = slctd_answers.length;
+            for(k=0;k< length;k++)
+            {   
+                qs_id = slctd_answers[k].value.split(',')[0];
+                if(qs_id === msg){
+                    if(checked){
+                        slctd_answers[k].disabled=false;
+                    }
+                    else{
+                        slctd_answers[k].checked = false;
+                        slctd_answers[k].disabled=true;
+                    }
+                }
+            }
+        }
+    </script>
+
+<%- include('includes/tch_end.ejs') %>

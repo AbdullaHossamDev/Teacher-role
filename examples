@@ -1,0 +1,65 @@
+const express = require('express');
+const userController = require('../controllers/user');
+const router = express.Router();
+
+/*router.get('/register',(req, res, next)=>{
+    if (req.session.isAuth == true){
+        return res.redirect('/')
+    }
+    res.render('regester');
+
+});*/
+
+const User = require('../models/user');
+const Course = require('../models/course');
+
+/*const u = new User('Ahmed Mostafa', 'ahmed.mostafa@gmail.com', '123', 'tch', 'm');
+u.save(row =>{
+    console.log(row);
+});
+
+var dbU =User.get('email','pass', row =>{
+    console.log(row)
+});*/
+
+/*var allusers = User.getAll(rows => {
+    //console.log(rows.length);
+    console.log(rows);
+})*/
+
+/*User.delete(1, msg =>{
+    console.log(msg);
+})*/
+
+
+
+
+/*const u = new User('name', 'email@gmail.com', 'pass', 'tch', 'm',1);
+u.update(row => {
+    //console.log(row);
+})*/
+
+const c1 = new Course('course222');
+c1.save(row => {
+    console.log(row);
+})
+
+/*Course.getCourse('COURSE1', row => {
+    //console.log(row);
+    c = new Course(row.name, row.tchr_id, row.id);
+    
+    c.name= 'COURSE1';
+    //console.log(c)
+    c.update(updatedrow => {
+        updatedrow.tchr_id = 20
+        console.log(updatedrow);
+    })
+})*/
+
+/*Course.getAll(rows=>{
+    console.log(rows);
+})
+
+Course.delete(3, msg =>{
+    console.log(msg);
+})*/

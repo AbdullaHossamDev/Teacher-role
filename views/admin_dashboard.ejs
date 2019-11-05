@@ -1,0 +1,47 @@
+<%- include('includes/adm_head.ejs') %>
+</head>
+<body>
+    <%- include('includes/adm_nav.ejs') %>
+
+    <h3>Add User</h3>
+    <form action="/adm/add-user" method="POST">
+        <table class="inputT">
+            <tr>
+                <td class="label">Name</td>
+                <td class="input"><input type="text" name="name" id="name" value="<%=name%>"></td>
+            </tr>
+            <tr>
+                <td class="label">Email</td>
+                <td class="input"><input type="email" name="email" id="email" value="<%=email%>"><%if(email !== ''){%><p>Email is already exist</p><%}%></td>
+                
+            </tr>
+            <tr>
+                <td class="label">Password</td>
+                <td class="input"><input type="text" name="password" id="password" value="<%=password%>"></td>
+            </tr>
+            <tr>
+                <td class="label">Sex</td>
+                <td class="input">
+                    <select name="sex" id="sex">
+                        <option value="m">M</option>
+                        <option value="f">F</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">Type</td>
+                <td class="input">
+                    <select name="type" id="type">
+                        <option value="adm">Admin</option>
+                        <option value="tch">Teacher</option>
+                        <option value="stu">Student</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="btn"><button type="submit">Add user</button></td>
+            </tr>
+        </table>
+    </form>
+
+    <%- include('includes/adm_end.ejs') %>

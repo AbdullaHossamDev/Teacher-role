@@ -1,0 +1,55 @@
+<%- include('includes/tch_head.ejs') %>
+</head>
+<body>
+    <%if(user.type ==='tch'){%>
+        <%- include('includes/tch_nav.ejs') %>
+    <%}else{%>
+        <%- include('includes/stu_nav.ejs') %>
+    <%}%>
+
+    <h3>Your data</h3>
+
+    <form action="#" method="POST">
+        <table  class="inputT">
+            <tr>
+                <td class="label">Name</td>
+                <td class="input"><input type="text" name="name" id="name" value="<%= user.name%>"></td>
+                
+            </tr>
+            <tr>
+                
+                <td class="label">Email</td>
+                <td class="input"><%= user.email%></td>
+                
+            </tr>
+            <tr>
+                
+                <td class="label">Password</td>
+                <td class="input"><input type="text" name="password" id="password" value="<%= user.password%>"></td>
+                
+            </tr>
+            <tr>
+                
+                <td class="label">Type</td>
+                <td class="input"><%= user.type == 'tch' ? 'Teacher' : 'Student'%></td>
+                
+            </tr>
+            <tr>
+                
+                <td class="label">Sex</td>
+                <td class="input">
+                    <select name="sex" id="sex">
+                        <option value="m">Male</option>
+                        <option value="f">Female</option>
+                    </select>
+                </td>
+                
+            </tr>
+            <tr>
+                <td colspan="2" class="btn"><button type="submit" formaction="/auth/save-user">Save changes</button></td>
+            </tr>
+        </table>
+    </form>
+    
+
+    <%- include('includes/tch_end.ejs') %>

@@ -1,0 +1,55 @@
+<%- include('includes/adm_head.ejs') %>
+</head>
+<body>
+    <%- include('includes/adm_nav.ejs') %>
+        
+    <%if(users.length > 0){%>
+        <h3>System users</h3>
+        <table>
+            <tr style="background:#00695c; color:white">
+                <td>Sn</td>
+                <td>Name</td>
+                <td>Email</td>
+                <td>Password</td>
+                <td>Type</td>
+                <td>Sex</td>
+                <td>Updata</td>
+                <td>Delete</td>
+                
+            </tr>
+            <% var sn = 1; %>
+            <%for(let u of users){ %>
+                <form action="#" method="POST"> 
+                <tr>
+                    
+                    <input id="id" name="id" type="hidden" value="<%= u.id %>">
+                    <td><%=sn%></td>
+                    <td><input class="widthHeight" type="text" name="name" id="name" value="<%= u.name%>"></td>
+                    <td><input class="widthHeight" type="email" name="email" id="email" value="<%= u.email%>"></td>
+                    <td><input class="widthHeight" type="text" name="password" id="password" value="<%= u.password%>"></td>
+                    <td>
+                        <select class="widthHeight" <%= u.id == admin_id ? 'disabled':''%> name="type" id="type">
+                            <option value="adm" <%= u.type === 'adm' ? 'selected':''%>>Admin</option>
+                            <option value="tch" <%= u.type === 'tch' ? 'selected':''%>>Teacher</option>
+                            <option value="stu" <%= u.type === 'stu' ? 'selected':''%>>Student</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select class="widthHeight" name="sex" id="sex">
+                            <option value="m" <%= u.sex === 'm' ? 'selected':''%>>Male</option>
+                            <option value="f" <%= u.sex === 'f' ? 'selected':''%>>Female</option>
+                        </select>
+                    </td>
+                    <td><button class="widthHeight" type="submit" formaction="/adm/user-update">Update</button></td>
+                    <td><button class="widthHeight" <%= u.id === admin_id ? 'disabled':''%> type="submit" formaction="/adm/user-delete">Delete</button></td>
+                    
+                </tr>
+            </form>
+                
+            <% sn = sn+1;}%>
+        </table>
+        <%}else{%>
+            <h3>You have no users yet!</h3>
+        <%}%>
+
+<%- include('includes/adm_end.ejs') %>

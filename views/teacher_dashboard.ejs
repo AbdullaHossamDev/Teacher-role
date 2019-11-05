@@ -1,0 +1,31 @@
+<%- include('includes/tch_head.ejs') %>
+
+</head>
+<body>
+    <%- include('includes/tch_nav.ejs') %>
+
+    <%if(courses.length > 0){%>
+    <h3>Courses</h3>
+    <table>
+        <tr style="background:#00695c; color:white">
+            <td>Sn</td>
+            <td>Name</td>
+            <td>Add quiz</td>
+        </tr>
+        <%sn = 1;%>
+        <% for(let c of courses){%>
+            <form action="/tch/quizzes">
+                <tr>
+                    <input id="id" name="id" type="hidden" value="<%= c.id %>">
+                    <td><%=sn%></td>
+                    <td><%=c.name%></td>
+                    <td><button class="widthHeight" type="submit">Add quiz</button></td>
+                </tr>
+            </form>
+        <%sn = sn+1;}%>
+    </table>
+    <%}else{%>
+        <h3>You have not assigned to any course yet!</h3>
+    <%}%>
+
+<%- include('includes/tch_end.ejs') %>

@@ -1,0 +1,44 @@
+<%- include('includes/adm_head.ejs') %>
+
+</head>
+<body>
+    <%- include('includes/adm_nav.ejs') %>
+
+    <h3><%= name%></h3>
+
+
+    <form action="#" method="POST">
+        <input type="hidden" name="course_id" id="course_id" value="<%= id%>">
+        <table style="width:50%;margin:auto;text-align: left;">
+            <tr style="background:#00695c; color:white">
+                <td>Sn</td>
+                <td>Name</td>
+                <td></td>
+            </tr>
+            <% var sn=1;if(cstu.length>0){%>
+            <%for( let stu of cstu){%>
+                <tr>
+                    <td><%= sn++%></td>
+                    <td><%= stu.name%></td>
+                    <td><input type="checkbox" name="selected_students" checked value="<%= stu.id%>"></td>
+                </tr>
+            <%}%>
+            <%}%>
+            <% if(rstu.length>0){%>
+            <%for( let stu of rstu){%>
+                <tr>
+                    <td><%= sn++%></td>
+                    <td><%= stu.name%></td>
+                    <td><input type="checkbox" name="selected_students" value="<%= stu.id%>"></td>
+                </tr>
+            <%}%>
+            <%}%>
+            <tr>
+                <td colspan="3" class="btn"><button type="submit" formaction="/adm/save-studnets">Save changes</button></td>
+            </tr>
+
+        </table>
+    </form>
+
+
+<%- include('includes/tch_end.ejs') %>

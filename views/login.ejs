@@ -1,0 +1,31 @@
+<%- include('includes/tch_head.ejs') %>
+
+</head>
+<body>
+    <header class="main-header">
+        <nav class="main-header__nav">
+            <ul class="main-header__item-list">
+            </ul>
+        </nav>
+    </header>
+
+    <h3>Login</h3>
+    <form action="/auth/login" method="POST">
+        <table class="inputT">
+            <tr>
+                <td class="label">Email</td>
+                <td class="input"><input type="email" name="email" id="email" required></td>
+            </tr>
+            <tr>
+                <td class="label">Password</td>
+                <td class="input"><input type="password" name="password" id="password" required></td>
+            </tr>
+            <tr>
+                <td colspan="2" class="btn"><button type="submit"> Login</button></td>
+            </tr>
+        </table>
+        
+    </form>
+
+
+<%- include('includes/tch_end.ejs') %>

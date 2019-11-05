@@ -1,0 +1,66 @@
+<%- include('includes/adm_head.ejs') %>
+</head>
+<body>
+    <%- include('includes/adm_nav.ejs') %>
+
+    <%if(courses.length > 0){%>
+    <h3>System courses</h3>
+    <table>
+            <tr style="background:#00695c; color:white">
+                <td>Sn</td>
+                <td>Name</td>
+                <td>Teacher name</td>
+                <td>Edit</td>
+                <td>Updata</td>
+                <td>Delete</td>
+            </tr>
+            <% var sn = 1; %>
+            <%for(let c of courses){ %>
+                <form action="#" method="POST">
+                    <tr>
+                        <input id="id" name="id" type="hidden" value="<%= c.id %>">
+                        <td><%=sn%></td>
+                        <td><input class="widthHeight" type="text" name="name" id="name" value="<%= c.name%>"></td>
+                        <td>
+                            <select class="widthHeight" name="tchr_id" id="tchr_id">
+                                <option value="-1" <%= c.tchr_id == -1 ? 'selected':''%> ></option>
+                                <%for(let u of users){%>
+                                    <option value="<%= u.id%>" <%= c.tchr_id == u.id ? 'selected':''%> ><%=u.name%></option> 
+                                <%}%>
+                            </select>
+                        </td>
+                        <td><button class="widthHeight" type="submit" formaction="/adm/course-students">Students</button></td>
+                        <td><button class="widthHeight" type="submit" formaction="/adm/course-update">Update</button></td>
+                        <td><button class="widthHeight" type="submit" formaction="/adm/course-delete">Delete</button></td>
+                    </tr>
+                </form>
+            <% sn = sn+1;}%>
+        </table>
+        <%}else{%>
+            <h3>You have no courses!</h3>
+        <%}%>
+        <h3>Add Course</h3>
+        <form action="/adm/add-course" method="POST">
+            <table  class="inputT">
+                <tr>
+                    <td class="label">Name</td>
+                    <td class="input"><input type="text" name="name" id="name"></td>
+                </tr>
+                <tr>
+                    <td class="label">Teacher</td>
+                    <td class="input">
+                        <select name="tchr_id" id="tchr_id">
+                            <option value="-1"></option>
+                            <%for(let u of users){%>
+                                <option value="<%=u.id%>" ><%=u.name%></option>
+                            <%}%>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="btn"><button type="submit">Add course</button></td>
+                </tr>
+            </table>
+        </form>
+
+<%- include('includes/adm_end.ejs') %>

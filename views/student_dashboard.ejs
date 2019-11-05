@@ -1,0 +1,31 @@
+<%- include('includes/tch_head.ejs') %>
+
+</head>
+<body>
+    <%- include('includes/stu_nav.ejs') %>
+
+    <%if(quizzes.length > 0){%>
+        <h3>Quizzes you have to solve and sent it by mail to Doctor.</h3>
+            <table>
+                <tr style="background:#00695c; color:white">
+                    <td style="width: 2%;">Sn</td>
+                    <td style="width: 50%;">Name</td>
+                    <td style="width: 10%;">Show</td>
+                </tr>
+                <%var sn=1;for(let qz of quizzes){%>
+                    <form action="#" method="POST">
+                        <tr>
+                            <input type="hidden" name="id" id="id" value="<%= qz.id%>">
+                            <td><%= sn++%></td>
+                            <td><%= qz.name%></td>
+                            <td><button class="widthHeight" type="submit" formaction="/stu/show-quiz">Show</button></td>
+                        </tr>
+                    </form>
+                <%}%>
+            </table>
+    <%}else{%>
+        <h3>You hava no quizzes yet.</h3>
+    <%}%>
+
+
+<%- include('includes/tch_end.ejs') %>
